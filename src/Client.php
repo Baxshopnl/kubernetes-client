@@ -114,7 +114,8 @@ class Client
 		'secrets'                => 'Repositories\SecretRepository',
 		'events'                 => 'Repositories\EventRepository',
 		'configMaps'             => 'Repositories\ConfigMapRepository',
-		
+		'namespaces'             => 'Repositories\KubernetesNamespaceRepository',
+
 		// extensions/v1beta1
 		'deployments'            => 'Repositories\DeploymentRepository',
 		'jobs'                   => 'Repositories\JobRepository',
