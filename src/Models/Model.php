@@ -47,12 +47,68 @@ abstract class Model
 	 * Get some metadata.
 	 *
 	 * @param  string $key
-	 * @return string
+	 * @return mixed
 	 */
 	public function getMetadata($key)
 	{
-		return isset($this->attributes['metadata'][$key]) ? $this->attributes['metadata'][$key] : null;
+        return $this->getData('metadata', $key);
+    }
+
+	/**
+	 * Get some specdata.
+	 *
+	 * @param  string $key
+	 * @return mixed
+	 */
+	public function getSpecdata($key)
+	{
+        return $this->getData('spec', $key);
 	}
+
+	/**
+	 * Get some specdata.
+	 *
+	 * @param  string $key
+	 * @return mixed
+	 */
+	public function getStatusdata($key)
+	{
+		return $this->getData('status', $key);
+	}
+
+    /**
+     * @param $space
+     * @param $item
+     * @return mixed
+     * @throws \Exception
+     */
+	protected function getData($space, $item)
+    {
+        $result = "";
+
+        if ($item === null || empty($item)) {
+            $result = $this->attributes[$space];
+        } else {
+            if (array_key_exists($item, $this->attributes[$space])) {
+                $result = $this->attributes[$space][$item];
+            } else {
+                $keys     = explode('.', $item);
+                $lookup   = $this->attributes[$space];
+                $foundAny = false;
+                foreach ($keys as $key) {
+                    if (isset($lookup[$key])) {
+                        $foundAny = true;
+                        $lookup   = $lookup[$key];
+                    }
+                }
+                if ($foundAny === true) {
+                    $result = $lookup;
+                }
+            }
+        }
+
+        return $result;
+    }
 
 	/**
 	 * Get the schema.
@@ -78,4 +134,5 @@ abstract class Model
 	{
 		return $this->getSchema();
 	}
+
 }
